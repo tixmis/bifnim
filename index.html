@@ -180,10 +180,12 @@ html[dir="rtl"] .curtain .ring svg{margin-right:4px;transform:scaleX(-1)}
   .map-card iframe{height:min(62vh,420px)}
 }
 
-/* Плашка бренда: прибита к ЛЕВОМУ верхнему углу физически (не зависит от RTL),
-   размер с запасом — накрывает водяной знак Matterport в плеере */
+/* Плашка бренда: логическая сторона "начала" — та же, где адрес.
+   В RTL (иврит/арабский) это физически ПРАВЫЙ край, в LTR — левый.
+   Так плашка никогда не пересечётся с переключателем языка,
+   который сидит на противоположной, "конечной" стороне шапки. */
 .made{
-  position:fixed;left:10px;right:auto;top:calc(64px + 6px);z-index:15;
+  position:fixed;inset-inline-start:10px;top:calc(64px + 6px);z-index:15;
   display:inline-flex;align-items:center;
   font-size:14px;letter-spacing:.12em;text-transform:uppercase;
   color:var(--paper);text-decoration:none;
