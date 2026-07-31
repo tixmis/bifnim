@@ -14,9 +14,9 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="סיור תלת־ממד · דירה בנתניה">
 <meta property="og:description" content="פתחו וטיילו בדירה מהטלפון — 60 שניות ואתם בפנים.">
-<!-- ↓ когда подключится домен bifnim.co.il — замени vercel.app на него в двух строках ↓ -->
-<meta property="og:image" content="https://bifnim.vercel.app/cover.jpg">
-<meta property="og:url" content="https://bifnim.vercel.app/">
+
+<meta property="og:image" content="https://bifnim.co.il/cover.jpg">
+<meta property="og:url" content="https://bifnim.co.il/">
 <meta name="twitter:card" content="summary_large_image">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -94,7 +94,8 @@ header{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:22px;text-align:center;padding:24px;
   background:
-    radial-gradient(120% 90% at 50% 10%,rgba(199,161,117,.10),transparent 55%),
+    linear-gradient(180deg,rgba(19,26,34,.5),rgba(19,26,34,.85)),
+    url('cover.jpg') center/cover no-repeat,
     var(--ink-soft);
   cursor:pointer;border:0;color:var(--paper);width:100%;
 }
@@ -144,6 +145,15 @@ html[dir="rtl"] .curtain .ring svg{margin-right:4px;transform:scaleX(-1)}
 .slate .wa-btn:focus-visible{outline:2px solid #fff;outline-offset:-4px}
 .slate .wa-btn svg{width:18px;height:18px;fill:#fff;flex-shrink:0}
 @media (max-width:520px){
+  /* компактный верх: шапка ниже, плашка меньше — экран отдаём туру */
+  header{height:56px;padding:0 12px}
+  .stage{inset:56px 0 0 0}
+  .made{
+    top:calc(56px + 4px);
+    padding:9px 16px;font-size:12px;letter-spacing:.1em;
+    min-width:150px;
+  }
+  .addr .eyebrow{font-size:9px}
   .slate .fact{padding:10px 12px}
   .agency .agency-name{display:none}
   .slate .wa-btn span{display:none}
@@ -155,8 +165,11 @@ html[dir="rtl"] .curtain .ring svg{margin-right:4px;transform:scaleX(-1)}
 /* ---------- Телефон, тур запущен: факты прячутся, остаётся круглая
    WhatsApp-кнопка в углу — не перекрываем управление Matterport ---------- */
 @media (max-width:768px){
+  /* тур запущен: остаётся круглая WA-кнопка внизу ПО ЦЕНТРУ —
+     оба нижних угла заняты кнопками самого Matterport,
+     центр свободен при любом языке (RTL/LTR) */
   body.tour-active .slate{
-    left:auto;inset-inline-end:14px;transform:none;
+    left:50%;transform:translateX(-50%);inset-inline-end:auto;
     bottom:calc(14px + env(safe-area-inset-bottom));
     border-radius:50%;
   }
@@ -180,12 +193,11 @@ html[dir="rtl"] .curtain .ring svg{margin-right:4px;transform:scaleX(-1)}
   .map-card iframe{height:min(62vh,420px)}
 }
 
-/* Плашка бренда: логическая сторона "начала" — та же, где адрес.
-   В RTL (иврит/арабский) это физически ПРАВЫЙ край, в LTR — левый.
-   Так плашка никогда не пересечётся с переключателем языка,
-   который сидит на противоположной, "конечной" стороне шапки. */
+/* Плашка бренда: ЖЁСТКО физический левый верхний угол при ЛЮБОМ языке
+   (left, не inset-inline-start!) — логотип Matterport в плеере всегда
+   слева, плашка обязана его накрывать и в иврите, и в русском */
 .made{
-  position:fixed;inset-inline-start:10px;top:calc(64px + 6px);z-index:15;
+  position:fixed;left:10px;right:auto;top:calc(64px + 6px);z-index:15;
   display:inline-flex;align-items:center;
   font-size:14px;letter-spacing:.12em;text-transform:uppercase;
   color:var(--paper);text-decoration:none;
