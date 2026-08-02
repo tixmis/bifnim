@@ -149,7 +149,6 @@ html[dir="rtl"] .curtain .ring svg{margin-right:4px;transform:scaleX(-1)}
   header{height:56px;padding:0 12px}
   .stage{inset:56px 0 0 0}
   .made{
-    top:calc(56px + 4px);
     padding:9px 16px;font-size:12px;letter-spacing:.1em;
     min-width:150px;
   }
@@ -165,18 +164,25 @@ html[dir="rtl"] .curtain .ring svg{margin-right:4px;transform:scaleX(-1)}
 /* ---------- Телефон, тур запущен: факты прячутся, остаётся круглая
    WhatsApp-кнопка в углу — не перекрываем управление Matterport ---------- */
 @media (max-width:768px){
-  /* тур запущен: остаётся круглая WA-кнопка внизу ПО ЦЕНТРУ —
-     оба нижних угла заняты кнопками самого Matterport,
-     центр свободен при любом языке (RTL/LTR) */
+  /* Тур запущен: круглая WA-кнопка. Нижний ряд управления рисует сам
+     Matterport ВНУТРИ кросс-доменного iframe (режимы слева, share справа),
+     поэтому "встроить кнопку в их ряд" физически невозможно — вместо
+     горизонтальной интеграции используется ВЕРТИКАЛЬНОЕ разделение:
+     кнопка прижата к правому краю и поднята НАД их нижней панелью
+     (~64px высотой) в свободную полосу. Не пересекается с их
+     контролами вплоть до 320px: занимает то, чего у плеера нет —
+     правый край выше панели. Позиции физические (right), т.к.
+     раскладка UI внутри плеера не зависит от dir страницы. */
   body.tour-active .slate{
-    left:50%;transform:translateX(-50%);inset-inline-end:auto;
-    bottom:calc(14px + env(safe-area-inset-bottom));
+    left:auto;transform:none;inset-inline-end:auto;
+    right:max(12px, env(safe-area-inset-right, 0px));
+    bottom:calc(80px + env(safe-area-inset-bottom, 0px));
     border-radius:50%;
   }
   body.tour-active .slate .fact{display:none}
   body.tour-active .slate .wa-btn{
-    padding:0;width:56px;height:56px;border-radius:50%;
-    justify-content:center;
+    padding:0;justify-content:center;border-radius:50%;
+    width:clamp(48px, 14vw, 56px);height:clamp(48px, 14vw, 56px);
   }
   body.tour-active .slate .wa-btn span{display:none}
   body.tour-active .slate .wa-btn svg{width:26px;height:26px}
@@ -186,29 +192,39 @@ html[dir="rtl"] .curtain .ring svg{margin-right:4px;transform:scaleX(-1)}
 @media (max-height:460px){
   header{height:50px}
   .stage{inset:50px 0 0 0}
-  .made{top:calc(50px + 6px);padding:8px 14px;font-size:11px;min-width:110px}
+  .made{padding:8px 14px;font-size:11px;min-width:110px}
   .addr .eyebrow{display:none}
   .curtain .ring{width:64px;height:64px}
   .curtain{gap:14px}
   .map-card iframe{height:min(62vh,420px)}
 }
 
-/* Плашка бренда: ЖЁСТКО физический левый верхний угол при ЛЮБОМ языке
-   (left, не inset-inline-start!) — логотип Matterport в плеере всегда
-   слева, плашка обязана его накрывать и в иврите, и в русском */
+/* Плашка бренда: живёт ВНУТРИ .stage (обёртки iframe) и позиционируется
+   абсолютно от её верхнего левого угла — в той же системе координат,
+   в которой плеер Matterport рисует свой логотип (верхний левый угол
+   iframe). Физический left, а не inset-inline-start: логотип Matterport
+   всегда физически слева при любом направлении текста страницы.
+   Высота шапки на позицию больше НЕ влияет — медиазапросам нечего
+   пересчитывать. .stage: position:fixed => является containing block. */
 .made{
-  position:fixed;left:10px;right:auto;top:calc(64px + 6px);z-index:15;
+  position:absolute;left:0;right:auto;top:0;z-index:6;
   display:inline-flex;align-items:center;
   font-size:14px;letter-spacing:.12em;text-transform:uppercase;
   color:var(--paper);text-decoration:none;
-  background:rgba(19,26,34,.94);padding:14px 26px;border-radius:28px;
-  border:1px solid var(--line);
+  background:rgba(19,26,34,.96);
+  padding:16px 30px 16px 34px;
+  /* скругление только со стороны, смотрящей в экран; угол,
+     накрывающий логотип Matterport — прямой, без щели */
+  border-radius:0 0 22px 0;
+  border:1px solid var(--line);border-top:0;border-left:0;
   backdrop-filter:blur(10px);
   box-shadow:0 4px 16px rgba(0,0,0,.35);
-  min-width:185px;justify-content:center;
+  min-width:200px;max-width:calc(100% - 12px);justify-content:center;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 .made b{color:var(--sand);font-weight:500}
 .made:hover{color:var(--paper)}
+.made:focus-visible{outline:2px solid var(--sand);outline-offset:-4px}
 
 /* ---------- Модалка с картой ---------- */
 .map-overlay{
@@ -288,6 +304,7 @@ const I18N = {
     rooms:"חדרים", area:'מ"ר', floor:"קומה",
     wa:"לכתוב למתווך", made:"הופק על ידי",
     openMap:"פתיחה בגוגל מפות", close:"סגירה",
+    langSel:"בחירת שפה", slateLbl:"פרטי הנכס ויצירת קשר",
     waMsg:"שלום! ראיתי את הסיור התלת־ממדי של הדירה ואשמח לפרטים"},
   en: {dir:"ltr", name:"English",
     eyebrow:"3D Walkthrough", enter:"Step inside",
@@ -295,6 +312,7 @@ const I18N = {
     rooms:"rooms", area:"m²", floor:"floor",
     wa:"Message the agent", made:"Tour by",
     openMap:"Open in Google Maps", close:"Close",
+    langSel:"Language selection", slateLbl:"Property details and contact",
     waMsg:"Hi! I saw the 3D tour of the apartment and would love more details"},
   ru: {dir:"ltr", name:"Русский",
     eyebrow:"3D-прогулка", enter:"Войти в квартиру",
@@ -302,6 +320,7 @@ const I18N = {
     rooms:"комнат", area:"м²", floor:"этаж",
     wa:"Написать маклеру", made:"Тур:",
     openMap:"Открыть в Google Maps", close:"Закрыть",
+    langSel:"Выбор языка", slateLbl:"Данные квартиры и контакт",
     waMsg:"Шалом! Видел(а) 3D-тур квартиры, хочу узнать подробнее"},
   ar: {dir:"rtl", name:"العربية",
     eyebrow:"جولة ثلاثية الأبعاد", enter:"ادخل إلى الشقة",
@@ -309,6 +328,7 @@ const I18N = {
     rooms:"غرف", area:"م²", floor:"طابق",
     wa:"مراسلة الوكيل", made:"الجولة من",
     openMap:"فتح في خرائط جوجل", close:"إغلاق",
+    langSel:"اختيار اللغة", slateLbl:"تفاصيل العقار والتواصل",
     waMsg:"مرحباً! شاهدت الجولة ثلاثية الأبعاد للشقة وأود المزيد من التفاصيل"},
   fr: {dir:"ltr", name:"Français",
     eyebrow:"Visite 3D", enter:"Entrez dans l'appartement",
@@ -316,6 +336,7 @@ const I18N = {
     rooms:"pièces", area:"m²", floor:"étage",
     wa:"Écrire à l'agent", made:"Visite par",
     openMap:"Ouvrir dans Google Maps", close:"Fermer",
+    langSel:"Choix de la langue", slateLbl:"Détails du bien et contact",
     waMsg:"Bonjour ! J'ai vu la visite 3D de l'appartement, je souhaite plus de détails"},
   es: {dir:"ltr", name:"Español",
     eyebrow:"Recorrido 3D", enter:"Entra al apartamento",
@@ -323,6 +344,7 @@ const I18N = {
     rooms:"hab.", area:"m²", floor:"planta",
     wa:"Escribir al agente", made:"Tour por",
     openMap:"Abrir en Google Maps", close:"Cerrar",
+    langSel:"Selección de idioma", slateLbl:"Detalles del inmueble y contacto",
     waMsg:"¡Hola! Vi el recorrido 3D del apartamento y me gustaría más información"}
 };
 </script>
@@ -352,11 +374,10 @@ const I18N = {
   <iframe id="tour" title="3D tour"
     allow="fullscreen; xr-spatial-tracking"
     allowfullscreen loading="lazy"></iframe>
+  <a class="made" id="made" target="_blank" rel="noopener"></a>
 </main>
 
-<a class="made" id="made" target="_blank" rel="noopener"></a>
-
-<div class="slate" id="slate">
+<div class="slate" id="slate" role="group">
   <div class="fact"><div class="num" id="rooms"></div><div class="lbl" id="roomsLbl"></div></div>
   <div class="fact"><div class="num" id="area"></div><div class="lbl" id="areaLbl"></div></div>
   <div class="fact"><div class="num" id="floor"></div><div class="lbl" id="floorLbl"></div></div>
@@ -414,6 +435,16 @@ function apply(lang){
   document.getElementById('wa').href =
     "https://wa.me/" + TOUR.whatsapp + "?text=" + encodeURIComponent(t.waMsg);
 
+  /* Доступные имена, следующие за языком страницы:
+     WA-ссылка на мобильном остаётся без видимого текста (иконка) —
+     aria-label даёт ей имя; заголовки iframe и группы — локализованы */
+  const adr = TOUR.address[lang] || TOUR.address[TOUR.defaultLang];
+  document.getElementById('wa').setAttribute('aria-label', t.wa);
+  document.getElementById('slate').setAttribute('aria-label', t.slateLbl);
+  document.getElementById('lang').setAttribute('aria-label', t.langSel);
+  document.getElementById('tour').title = t.eyebrow + " · " + adr;
+  document.getElementById('mapFrame').title = adr;
+
   const made = document.getElementById('made');
   made.href = TOUR.brandUrl;
   made.innerHTML = t.made + " <b>" + TOUR.brandName + "</b>";
@@ -458,7 +489,18 @@ function closeMap(){
 document.getElementById('mapClose').addEventListener('click', closeMap);
 overlay.addEventListener('click', e => { if (e.target === overlay) closeMap(); });
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && overlay.classList.contains('open')) closeMap();
+  if (!overlay.classList.contains('open')) return;
+  if (e.key === 'Escape'){ closeMap(); return; }
+  /* Ловушка фокуса внутри диалога карты: Tab циклится между
+     кнопкой закрытия и ссылкой "открыть в Maps" */
+  if (e.key === 'Tab'){
+    const f = [document.getElementById('mapClose'), document.getElementById('mapLink')];
+    const i = f.indexOf(document.activeElement);
+    e.preventDefault();
+    const next = e.shiftKey ? (i <= 0 ? f.length - 1 : i - 1)
+                            : (i === -1 || i === f.length - 1 ? 0 : i + 1);
+    f[next].focus();
+  }
 });
 
 /* ---------- Агентство ---------- */
@@ -484,5 +526,6 @@ curtain.addEventListener('click', () => {
   frame.focus();
 });
 </script>
+<script src="/a11y.js" defer></script>
 </body>
 </html>
