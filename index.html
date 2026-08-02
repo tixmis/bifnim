@@ -60,6 +60,7 @@ body{
   transition:filter .2s ease, transform .2s ease;
 }
 .cta:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.cta:focus-visible{outline:2px solid var(--paper);outline-offset:3px}
 .cta svg{width:20px;height:20px;fill:#fff}
 
 /* ---------- Сетка туров ---------- */
@@ -86,6 +87,7 @@ body{
   transition:transform .25s ease, box-shadow .25s ease;
 }
 .card:hover{transform:translateY(-3px);box-shadow:0 16px 44px rgba(0,0,0,.45)}
+.card:focus-visible{outline:2px solid var(--sand);outline-offset:3px}
 .card .bg{
   position:absolute;inset:0;
   background-size:cover;background-position:center;
@@ -135,11 +137,12 @@ footer b{color:var(--sand);font-weight:500;letter-spacing:.18em}
 ============================================================ -->
 <script>
 const SITE = {
-  whatsapp: "972545948101",
+  whatsapp: "9725XXXXXXXX",
   waText: "שלום! אשמח לשמוע פרטים על סיור תלת־ממד לנכס"
 };
 </script>
 
+<main>
 <section class="hero">
   <div class="wrap">
     <div class="brand">BIFNIM</div>
@@ -161,6 +164,8 @@ const SITE = {
     <div class="empty" id="empty" hidden>בקרוב כאן יופיעו נכסים חדשים</div>
   </div>
 </section>
+
+</main>
 
 <footer>
   <b>BIFNIM</b> · סיורי תלת־ממד לנדל"ן · נתניה והסביבה
@@ -199,5 +204,6 @@ fetch('tours.json', {cache:'no-store'})
     }
   });
 </script>
+<script src="/a11y.js" defer></script>
 </body>
 </html>
