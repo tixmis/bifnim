@@ -72,6 +72,22 @@ header{
 .addr-btn:hover h1{border-bottom-color:var(--sand)}
 .addr-btn:focus-visible{outline:2px solid var(--sand);outline-offset:3px;border-radius:4px}
 .head-right{display:flex;align-items:center;gap:12px;flex-shrink:0}
+
+/* Плашка бренда: обычный флекс-элемент шапки, между адресом и группой
+   «агентство + язык». Над iframe больше не висит — с логотипом и
+   контролами Matterport не пересекается вовсе. Сжимается раньше, чем
+   переносится: сначала многоточие на подписи, ниже 520px подпись
+   скрывается совсем (как .agency-name), имя бренда не режется никогда. */
+.made{
+  display:inline-flex;align-items:center;gap:.45em;min-width:0;
+  font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--mist);text-decoration:none;
+}
+.made .made-by{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.made b{color:var(--sand);font-weight:500;white-space:nowrap;flex-shrink:0}
+.made:hover b{color:var(--paper)}
+.made:focus-visible{outline:2px solid var(--sand);outline-offset:3px;border-radius:4px}
+
 .agency{display:flex;align-items:center;gap:10px}
 .agency img{height:34px;width:auto;border-radius:6px;display:block}
 .agency .agency-name{font-size:13px;color:var(--mist);font-weight:400}
@@ -148,13 +164,13 @@ html[dir="rtl"] .curtain .ring svg{margin-right:4px;transform:scaleX(-1)}
   /* компактный верх: шапка ниже, плашка меньше — экран отдаём туру */
   header{height:56px;padding:0 12px}
   .stage{inset:56px 0 0 0}
-  .made{
-    padding:9px 16px;font-size:12px;letter-spacing:.1em;
-    min-width:150px;
-  }
   .addr .eyebrow{font-size:9px}
   .slate .fact{padding:10px 12px}
   .agency .agency-name{display:none}
+  /* узкий экран: остаётся только имя бренда — подпись «הופק על ידי»
+     живёт в aria-label ссылки */
+  .made .made-by{display:none}
+  .made{font-size:11px}
   .slate .wa-btn span{display:none}
   .slate .wa-btn{padding:12px 16px}
   /* переключатель языка — полноценная цель для пальца */
@@ -192,39 +208,11 @@ html[dir="rtl"] .curtain .ring svg{margin-right:4px;transform:scaleX(-1)}
 @media (max-height:460px){
   header{height:50px}
   .stage{inset:50px 0 0 0}
-  .made{padding:8px 14px;font-size:11px;min-width:110px}
   .addr .eyebrow{display:none}
   .curtain .ring{width:64px;height:64px}
   .curtain{gap:14px}
   .map-card iframe{height:min(62vh,420px)}
 }
-
-/* Плашка бренда: живёт ВНУТРИ .stage (обёртки iframe) и позиционируется
-   абсолютно от её верхнего левого угла — в той же системе координат,
-   в которой плеер Matterport рисует свой логотип (верхний левый угол
-   iframe). Физический left, а не inset-inline-start: логотип Matterport
-   всегда физически слева при любом направлении текста страницы.
-   Высота шапки на позицию больше НЕ влияет — медиазапросам нечего
-   пересчитывать. .stage: position:fixed => является containing block. */
-.made{
-  position:absolute;left:0;right:auto;top:0;z-index:6;
-  display:inline-flex;align-items:center;
-  font-size:14px;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--paper);text-decoration:none;
-  background:rgba(19,26,34,.96);
-  padding:16px 30px 16px 34px;
-  /* скругление только со стороны, смотрящей в экран; угол,
-     накрывающий логотип Matterport — прямой, без щели */
-  border-radius:0 0 22px 0;
-  border:1px solid var(--line);border-top:0;border-left:0;
-  backdrop-filter:blur(10px);
-  box-shadow:0 4px 16px rgba(0,0,0,.35);
-  min-width:200px;max-width:calc(100% - 12px);justify-content:center;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.made b{color:var(--sand);font-weight:500}
-.made:hover{color:var(--paper)}
-.made:focus-visible{outline:2px solid var(--sand);outline-offset:-4px}
 
 /* ---------- Модалка с картой ---------- */
 .map-overlay{
@@ -357,6 +345,9 @@ const I18N = {
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
     </button>
   </div>
+  <a class="made" id="made" target="_blank" rel="noopener">
+    <span class="made-by" id="madeBy"></span><b id="madeBrand"></b>
+  </a>
   <div class="head-right">
     <div class="agency" id="agency"></div>
     <select class="lang" id="lang" aria-label="Language"></select>
@@ -374,7 +365,6 @@ const I18N = {
   <iframe id="tour" title="3D tour"
     allow="fullscreen; xr-spatial-tracking"
     allowfullscreen loading="lazy"></iframe>
-  <a class="made" id="made" target="_blank" rel="noopener"></a>
 </main>
 
 <div class="slate" id="slate" role="group">
@@ -445,9 +435,13 @@ function apply(lang){
   document.getElementById('tour').title = t.eyebrow + " · " + adr;
   document.getElementById('mapFrame').title = adr;
 
+  /* Подпись скрывается на узких экранах, поэтому доступное имя ссылки
+     задаём явно — оно всегда полное */
   const made = document.getElementById('made');
   made.href = TOUR.brandUrl;
-  made.innerHTML = t.made + " <b>" + TOUR.brandName + "</b>";
+  document.getElementById('madeBy').textContent    = t.made;
+  document.getElementById('madeBrand').textContent = TOUR.brandName;
+  made.setAttribute('aria-label', t.made + " " + TOUR.brandName);
 
   /* карта: заголовок, ссылка и язык подписей Google */
   document.getElementById('mapTitle').textContent = TOUR.address[lang] || TOUR.address[TOUR.defaultLang];
