@@ -1,3 +1,4 @@
+<!-- FILE IDENTITY: root index.html — the site landing page (hero + property grid). On GitHub this MUST stay named "index.html" in the repo root. Do not rename there. -->
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -32,9 +33,29 @@ body{
 }
 .wrap{max-width:1080px;margin:0 auto;padding:0 clamp(16px,4vw,40px)}
 
+/* ---------- Языковая полоса ---------- */
+.langbar{
+  border-bottom:1px solid var(--line);
+  padding:10px clamp(16px,4vw,40px);
+  display:flex;justify-content:center;gap:8px;
+}
+.langbar button{
+  display:inline-flex;align-items:center;gap:7px;
+  background:none;border:1px solid transparent;border-radius:20px;
+  color:var(--mist);font-family:inherit;font-size:13px;font-weight:400;
+  padding:6px 12px;cursor:pointer;
+}
+.langbar button .flag{font-size:15px;line-height:1}
+.langbar button:hover{color:var(--paper)}
+.langbar button[aria-pressed="true"]{
+  color:var(--sand);border-color:rgba(199,161,117,.4);
+  background:rgba(199,161,117,.08);
+}
+.langbar button:focus-visible{outline:2px solid var(--sand);outline-offset:2px}
+
 /* ---------- Герой ---------- */
 .hero{
-  padding:clamp(56px,12vh,120px) 0 clamp(40px,8vh,72px);
+  padding:clamp(48px,10vh,100px) 0 clamp(40px,8vh,72px);
   text-align:center;
   background:
     radial-gradient(90% 70% at 50% 0%, rgba(199,161,117,.12), transparent 60%);
@@ -132,77 +153,172 @@ footer b{color:var(--sand);font-weight:500;letter-spacing:.18em}
 <body>
 
 <!-- ============================================================
-     НАСТРОЙКИ ГЛАВНОЙ: впиши свой WhatsApp (только цифры, с 972).
+     НАСТРОЙКИ ГЛАВНОЙ: номер WhatsApp вписан ниже.
      Список объектов живёт в tours.json рядом с этим файлом.
 ============================================================ -->
 <script>
-const SITE = {
-  whatsapp: "9725XXXXXXXX",
-  waText: "שלום! אשמח לשמוע פרטים על סיור תלת־ממד לנכס"
+const SITE = { whatsapp: "972552481623" };
+
+/* ---------- Словарь интерфейса: he (дефолт) / en / fr ----------
+   Заголовки карточек (адрес) приходят как есть из tours.json —
+   свободный текст адреса автоматически не переводится. Переводятся
+   статичная "оболочка" страницы и словарь единиц/статусов карточек. */
+const LANG = {
+  he: { dir:"rtl", name:"עברית", flag:"🇮🇱",
+    h1:"כאילו אתם כבר בפנים",
+    sub:"סיורי תלת־ממד לעסק או לנכס שלכם.",
+    cta:"להזמנת סריקה",
+    waMsg:"שלום! אשמח לשמוע פרטים על סיור תלת־ממד לנכס",
+    toursH:"נכסים פעילים", hint:"לחצו על נכס כדי להיכנס לסיור",
+    empty:"בקרוב כאן יופיעו נכסים חדשים",
+    footer:"סיורי תלת־ממד לנדל\"ן · נתניה והסביבה",
+    rooms:"חדרים", area:'מ"ר', floor:"קומה",
+    badges:{ "להשכרה":"להשכרה", "למכירה":"למכירה", "הושכר":"הושכר", "לדוגמה":"לדוגמה" },
+    langAria:"בחירת שפה"
+  },
+  en: { dir:"ltr", name:"English", flag:"🇬🇧",
+    h1:"As if you're already inside",
+    sub:"3D tours for your property or business.",
+    cta:"Book a scan",
+    waMsg:"Hi! I'd like details about a 3D tour for a property",
+    toursH:"Active properties", hint:"Tap a property to enter the tour",
+    empty:"New properties coming soon",
+    footer:"3D property tours · Netanya & surroundings",
+    rooms:"rooms", area:"m²", floor:"floor",
+    badges:{ "להשכרה":"For Rent", "למכירה":"For Sale", "הושכר":"Rented", "לדוגמה":"Example" },
+    langAria:"Language selection"
+  },
+  fr: { dir:"ltr", name:"Français", flag:"🇫🇷",
+    h1:"Comme si vous y étiez déjà",
+    sub:"Visites 3D pour votre bien ou votre entreprise.",
+    cta:"Réserver un scan",
+    waMsg:"Bonjour ! J'aimerais des détails sur une visite 3D d'un bien",
+    toursH:"Biens actifs", hint:"Cliquez sur un bien pour visiter",
+    empty:"De nouveaux biens arrivent bientôt",
+    footer:"Visites 3D immobilières · Netanya et environs",
+    rooms:"pièces", area:"m²", floor:"étage",
+    badges:{ "להשכרה":"À louer", "למכירה":"À vendre", "הושכר":"Loué", "לדוגמה":"Exemple" },
+    langAria:"Choix de la langue"
+  }
 };
 </script>
+
+<div class="langbar" id="langbar" role="group"></div>
 
 <main>
 <section class="hero">
   <div class="wrap">
     <div class="brand">BIFNIM</div>
-    <h1>כאילו אתם כבר בפנים</h1>
-    <p>סיורי תלת־ממד לנכסים — הלקוח מטייל בדירה ישירות מהטלפון, מכל מקום בעולם. פחות ביקורי סרק, יותר קונים רציניים.</p>
+    <h1 id="h1"></h1>
+    <p id="sub"></p>
     <a class="cta" id="cta" target="_blank" rel="noopener">
       <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.3-.7.8-.8 1-.1.2-.3.2-.6.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4 0-.5.1-.7l.5-.6c.1-.2.1-.4 0-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.9.9-1.1 2.2-.2 3.9 1 1.9 2.6 3.5 4.6 4.4 2 .9 2.7.8 3.5.7.6-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2-.1-.1-.3-.2-.7-.3z"/></svg>
-      להזמנת סריקה
+      <span id="ctaLbl"></span>
     </a>
   </div>
 </section>
 
 <section class="wrap">
   <div class="tours-head">
-    <h2>נכסים פעילים</h2>
-    <span class="hint">לחצו על נכס כדי להיכנס לסיור</span>
+    <h2 id="toursH"></h2>
+    <span class="hint" id="hint"></span>
   </div>
   <div class="grid" id="grid">
-    <div class="empty" id="empty" hidden>בקרוב כאן יופיעו נכסים חדשים</div>
+    <div class="empty" id="empty" hidden></div>
   </div>
 </section>
 
 </main>
 
 <footer>
-  <b>BIFNIM</b> · סיורי תלת־ממד לנדל"ן · נתניה והסביבה
+  <b>BIFNIM</b> · <span id="footerTxt"></span>
 </footer>
 
 <script>
-document.getElementById('cta').href =
-  "https://wa.me/" + SITE.whatsapp + "?text=" + encodeURIComponent(SITE.waText);
+/* ---------- Язык: сохранённый выбор → дефолт he ---------- */
+let currentLang = (function(){
+  try { const s = localStorage.getItem('bifnim-lang'); if (s && LANG[s]) return s; } catch(e){}
+  return 'he';
+})();
 
-/* Объекты подтягиваются из tours.json — простой список рядом с файлом */
+let toursCache = null; /* объекты запрашиваются один раз, рендер переигрывается при смене языка */
+
+function renderCards(t){
+  const grid = document.getElementById('grid');
+  grid.querySelectorAll('.card').forEach(el => el.remove());
+  const emptyEl = document.getElementById('empty');
+  emptyEl.textContent = t.empty;
+
+  if (!Array.isArray(toursCache) || toursCache.length === 0){
+    emptyEl.hidden = false;
+    return;
+  }
+  emptyEl.hidden = true;
+  for (const item of toursCache){
+    const a = document.createElement('a');
+    a.className = 'card';
+    a.href = '/' + item.slug + '/';
+    const facts = [
+      item.rooms ? item.rooms + ' ' + t.rooms : '',
+      item.area  ? item.area + ' ' + t.area   : '',
+      item.floor ? t.floor + ' ' + item.floor : ''
+    ].filter(Boolean).join(' · ');
+    const badgeTxt = item.badge ? (t.badges[item.badge] || item.badge) : '';
+    a.innerHTML =
+      '<div class="bg" style="background-image:url(\'/' + item.slug + '/cover.jpg\')"></div>' +
+      '<div class="shade"></div>' +
+      (badgeTxt ? '<div class="badge">' + badgeTxt + '</div>' : '') +
+      '<div class="info"><div class="title">' + item.title + '</div>' +
+      '<div class="facts">' + facts + '</div></div>';
+    document.getElementById('grid').appendChild(a);
+  }
+}
+
+function applyLang(code){
+  const t = LANG[code];
+  currentLang = code;
+  document.documentElement.lang = code;
+  document.documentElement.dir = t.dir;
+
+  document.getElementById('h1').textContent = t.h1;
+  document.getElementById('sub').textContent = t.sub;
+  document.getElementById('ctaLbl').textContent = t.cta;
+  document.getElementById('toursH').textContent = t.toursH;
+  document.getElementById('hint').textContent = t.hint;
+  document.getElementById('footerTxt').textContent = t.footer;
+  document.title = "BIFNIM · " + t.toursH;
+
+  document.getElementById('cta').href =
+    "https://wa.me/" + SITE.whatsapp + "?text=" + encodeURIComponent(t.waMsg);
+
+  const bar = document.getElementById('langbar');
+  bar.setAttribute('aria-label', t.langAria);
+  bar.querySelectorAll('button').forEach(b =>
+    b.setAttribute('aria-pressed', String(b.dataset.code === code)));
+
+  if (toursCache) renderCards(t);
+  try { localStorage.setItem('bifnim-lang', code); } catch(e){}
+}
+
+/* ---------- Кнопки языков ---------- */
+const bar = document.getElementById('langbar');
+Object.keys(LANG).forEach(code => {
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.dataset.code = code;
+  b.setAttribute('aria-label', LANG[code].name);
+  b.innerHTML = '<span class="flag" aria-hidden="true">' + LANG[code].flag + '</span>' + LANG[code].name;
+  b.addEventListener('click', () => applyLang(code));
+  bar.appendChild(b);
+});
+
+/* ---------- Объекты — один fetch, дальше рендер по языку ---------- */
 fetch('tours.json', {cache:'no-store'})
   .then(r => r.ok ? r.json() : [])
   .catch(() => [])
-  .then(tours => {
-    const grid = document.getElementById('grid');
-    if (!Array.isArray(tours) || tours.length === 0){
-      document.getElementById('empty').hidden = false;
-      return;
-    }
-    for (const t of tours){
-      const a = document.createElement('a');
-      a.className = 'card';
-      a.href = '/' + t.slug + '/';
-      const facts = [
-        t.rooms ? t.rooms + ' חדרים' : '',
-        t.area  ? t.area + ' מ"ר'   : '',
-        t.floor ? 'קומה ' + t.floor : ''
-      ].filter(Boolean).join(' · ');
-      a.innerHTML =
-        '<div class="bg" style="background-image:url(\'/' + t.slug + '/cover.jpg\')"></div>' +
-        '<div class="shade"></div>' +
-        (t.badge ? '<div class="badge">' + t.badge + '</div>' : '') +
-        '<div class="info"><div class="title">' + t.title + '</div>' +
-        '<div class="facts">' + facts + '</div></div>';
-      grid.appendChild(a);
-    }
-  });
+  .then(data => { toursCache = Array.isArray(data) ? data : []; applyLang(currentLang); });
+
+applyLang(currentLang); /* немедленный первый рендер шапки, не дожидаясь fetch */
 </script>
 <script src="/a11y.js" defer></script>
 </body>
