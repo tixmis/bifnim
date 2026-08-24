@@ -1,3 +1,4 @@
+<!-- FILE IDENTITY: root index.html — the site landing page (hero + property grid). On GitHub this MUST stay named "index.html" in the repo root. Do not rename there. -->
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -5,18 +6,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#131A22">
 
-<!-- ============================================================
-     OG-теги: превью в WhatsApp. Править руками под каждый объект.
-     og:image — файл cover.jpg (1200x630) рядом, ПОЛНЫЙ url.
-============================================================ -->
-<title>רח׳ דב גרונר 6</title>
-<meta name="description" content="טיילו בדירה ישירות מהטלפון — סיור תלת־ממדי, כאילו אתם כבר בפנים.">
+<title>BIFNIM · סיורי תלת־ממד לנדל"ן</title>
+<meta name="description" content="סיורים וירטואליים לדירות ונכסים — הלקוח מטייל בנכס מהטלפון, כאילו הוא כבר בפנים.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="רח׳ דב גרונר 6">
-<meta property="og:description" content="פתחו וטיילו בדירה מהטלפון — 60 שניות ואתם בפנים.">
-
-<meta property="og:image" content="https://bifnim.co.il/object_3/cover.jpg">
-<meta property="og:url" content="https://bifnim.co.il/object_3/">
+<meta property="og:title" content="BIFNIM · סיורי תלת־ממד לנדל&quot;ן">
+<meta property="og:description" content="כאילו אתם כבר בפנים — סיור וירטואלי בנכס ישירות מהטלפון.">
+<meta property="og:image" content="https://bifnim.co.il/cover.jpg">
+<meta property="og:url" content="https://bifnim.co.il/">
 <meta name="twitter:card" content="summary_large_image">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,244 +21,131 @@
 
 <style>
 :root{
-  --ink:#131A22;
-  --ink-soft:#1D2733;
-  --paper:#F6F4EF;
-  --sand:#C7A175;
-  --mist:#8E9AA6;
-  --line:rgba(246,244,239,.14);
-  --wa:#1FAD57;
-  --radius:14px;
+  --ink:#131A22; --ink-soft:#1D2733; --paper:#F6F4EF;
+  --sand:#C7A175; --mist:#8E9AA6; --line:rgba(246,244,239,.14);
+  --wa:#1FAD57; --radius:16px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%}
 body{
-  background:var(--ink);
-  color:var(--paper);
-  font-family:'Rubik',system-ui,sans-serif;
-  font-weight:300;
-  -webkit-font-smoothing:antialiased;
+  background:var(--ink); color:var(--paper);
+  font-family:'Rubik',system-ui,sans-serif; font-weight:300;
+  -webkit-font-smoothing:antialiased; min-height:100vh;
 }
+.wrap{max-width:1080px;margin:0 auto;padding:0 clamp(16px,4vw,40px)}
 
-header{
-  position:fixed;inset:0 0 auto 0;z-index:20;
-  display:flex;align-items:center;justify-content:space-between;
-  gap:12px;padding:0 clamp(14px,4vw,40px);height:64px;
-  background:linear-gradient(180deg,rgba(19,26,34,.92),rgba(19,26,34,.75));
-  backdrop-filter:blur(12px);
+/* ---------- Языковая полоса ---------- */
+.langbar{
   border-bottom:1px solid var(--line);
+  padding:10px clamp(16px,4vw,40px);
+  display:flex;justify-content:center;gap:8px;
 }
-.addr{min-width:0}
-.addr .eyebrow{
-  font-size:10px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--sand);font-weight:500;
-}
-.addr-btn{
-  display:flex;align-items:center;gap:7px;
-  background:none;border:0;color:var(--paper);cursor:pointer;
-  min-width:0;max-width:100%;padding:0;text-align:start;
-}
-.addr-btn h1{
-  font-family:'Cormorant','Rubik',serif;font-weight:600;
-  font-size:clamp(17px,2.4vw,22px);line-height:1.15;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  border-bottom:1px dashed rgba(199,161,117,.55);
-}
-.addr-btn svg{width:14px;height:14px;fill:var(--sand);flex-shrink:0}
-.addr-btn:hover h1{border-bottom-color:var(--sand)}
-.addr-btn:focus-visible{outline:2px solid var(--sand);outline-offset:3px;border-radius:4px}
-.head-right{display:flex;align-items:center;gap:12px;flex-shrink:0}
-.agency{display:flex;align-items:center;gap:10px}
-.agency img{height:34px;width:auto;border-radius:6px;display:block}
-.agency .agency-name{font-size:13px;color:var(--mist);font-weight:400}
-
-.lang{
-  appearance:none;-webkit-appearance:none;
-  background:rgba(246,244,239,.07);color:var(--paper);
-  border:1px solid var(--line);border-radius:20px;
-  font-family:'Rubik',sans-serif;font-size:12px;font-weight:400;
+.langbar button{
+  display:inline-flex;align-items:center;gap:7px;
+  background:none;border:1px solid transparent;border-radius:20px;
+  color:var(--mist);font-family:inherit;font-size:13px;font-weight:400;
   padding:6px 12px;cursor:pointer;
 }
-.lang:focus-visible{outline:2px solid var(--sand);outline-offset:2px}
-.lang option{color:#111;background:#fff}
+.langbar button .flag{font-size:15px;line-height:1}
+.langbar button:hover{color:var(--paper)}
+.langbar button[aria-pressed="true"]{
+  color:var(--sand);border-color:rgba(199,161,117,.4);
+  background:rgba(199,161,117,.08);
+}
+.langbar button:focus-visible{outline:2px solid var(--sand);outline-offset:2px}
 
-.stage{position:fixed;inset:64px 0 0 0;background:var(--ink-soft)}
-.stage iframe{width:100%;height:100%;border:0;display:block}
-
-.curtain{
-  position:absolute;inset:0;z-index:5;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:22px;text-align:center;padding:24px;
+/* ---------- Герой ---------- */
+.hero{
+  padding:clamp(48px,10vh,100px) 0 clamp(40px,8vh,72px);
+  text-align:center;
   background:
-    linear-gradient(180deg,rgba(19,26,34,.5),rgba(19,26,34,.85)),
-    url('cover.jpg') center/cover no-repeat,
-    var(--ink-soft);
-  cursor:pointer;border:0;color:var(--paper);width:100%;
+    radial-gradient(90% 70% at 50% 0%, rgba(199,161,117,.12), transparent 60%);
 }
-.curtain.hidden{display:none}
-.curtain .ring{
-  width:86px;height:86px;border-radius:50%;
-  border:1px solid var(--sand);
-  display:grid;place-items:center;
-  transition:transform .35s ease, background .35s ease;
+.brand{
+  font-size:13px;letter-spacing:.34em;text-transform:uppercase;
+  color:var(--sand);font-weight:500;
 }
-.curtain:hover .ring,.curtain:focus-visible .ring{
-  transform:scale(1.07);background:rgba(199,161,117,.12);
+.hero h1{
+  font-family:'Cormorant','Rubik',serif;font-weight:600;
+  font-size:clamp(34px,6vw,58px);line-height:1.12;
+  margin:18px auto 14px;max-width:16ch;
 }
-.curtain .ring svg{width:30px;height:30px;fill:var(--sand)}
-html[dir="ltr"] .curtain .ring svg{margin-left:4px}
-html[dir="rtl"] .curtain .ring svg{margin-right:4px;transform:scaleX(-1)}
-.curtain .cta-title{
-  font-family:'Cormorant','Rubik',serif;
-  font-size:clamp(24px,4.5vw,34px);font-weight:500;
+.hero p{
+  color:var(--mist);font-size:clamp(15px,2vw,18px);
+  max-width:44ch;margin:0 auto 30px;line-height:1.7;
 }
-.curtain .cta-sub{font-size:14px;color:var(--mist);max-width:320px;line-height:1.6}
-.curtain:focus-visible{outline:2px solid var(--sand);outline-offset:-6px}
+.cta{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--wa);color:#fff;text-decoration:none;
+  font-weight:500;font-size:16px;
+  padding:15px 30px;border-radius:32px;
+  transition:filter .2s ease, transform .2s ease;
+}
+.cta:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.cta:focus-visible{outline:2px solid var(--paper);outline-offset:3px}
+.cta svg{width:20px;height:20px;fill:#fff}
 
-.slate{
-  position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));
-  transform:translateX(-50%);z-index:20;
-  display:flex;align-items:stretch;
-  background:rgba(19,26,34,.88);backdrop-filter:blur(12px);
-  border:1px solid var(--line);border-radius:var(--radius);
-  overflow:hidden;
-  box-shadow:0 12px 40px rgba(0,0,0,.45);
-  max-width:calc(100% - 24px);
+/* ---------- Сетка туров ---------- */
+.tours-head{
+  display:flex;align-items:baseline;justify-content:space-between;
+  gap:16px;margin:26px 0 18px;
 }
-.slate .fact{padding:12px 18px;text-align:center;border-inline-end:1px solid var(--line)}
-.slate .num{font-size:17px;font-weight:500;letter-spacing:.02em}
-.slate .lbl{
-  font-size:9px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--mist);margin-top:2px;
+.tours-head h2{
+  font-family:'Cormorant','Rubik',serif;font-weight:600;
+  font-size:clamp(22px,3.4vw,30px);
 }
-.slate .wa-btn{
-  display:flex;align-items:center;gap:9px;
-  padding:12px 20px;background:var(--wa);color:#fff;
-  text-decoration:none;font-weight:500;font-size:14px;
-  transition:filter .2s ease;
+.tours-head .hint{color:var(--mist);font-size:13px}
+.grid{
+  display:grid;gap:18px;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  padding-bottom:64px;
 }
-.slate .wa-btn:hover{filter:brightness(1.08)}
-.slate .wa-btn:focus-visible{outline:2px solid #fff;outline-offset:-4px}
-.slate .wa-btn svg{width:18px;height:18px;fill:#fff;flex-shrink:0}
-@media (max-width:520px){
-  /* компактный верх: шапка ниже, плашка меньше — экран отдаём туру */
-  header{height:56px;padding:0 12px}
-  .stage{inset:56px 0 0 0}
-  .made{
-    padding:9px 16px;font-size:12px;letter-spacing:.1em;
-    min-width:150px;
-  }
-  .addr .eyebrow{font-size:9px}
-  .slate .fact{padding:10px 12px}
-  .agency .agency-name{display:none}
-  .slate .wa-btn span{display:none}
-  .slate .wa-btn{padding:12px 16px}
-  /* переключатель языка — полноценная цель для пальца */
-  .lang{padding:9px 14px;font-size:13px}
+.card{
+  position:relative;display:block;text-decoration:none;color:var(--paper);
+  border-radius:var(--radius);overflow:hidden;
+  border:1px solid var(--line);
+  background:var(--ink-soft);
+  aspect-ratio:4/3;
+  transition:transform .25s ease, box-shadow .25s ease;
 }
-
-/* ---------- Телефон, тур запущен: факты прячутся, остаётся круглая
-   WhatsApp-кнопка в углу — не перекрываем управление Matterport ---------- */
-@media (max-width:768px){
-  /* Тур запущен: круглая WA-кнопка. Нижний ряд управления рисует сам
-     Matterport ВНУТРИ кросс-доменного iframe (режимы слева, share справа),
-     поэтому "встроить кнопку в их ряд" физически невозможно — вместо
-     горизонтальной интеграции используется ВЕРТИКАЛЬНОЕ разделение:
-     кнопка прижата к правому краю и поднята НАД их нижней панелью
-     (~64px высотой) в свободную полосу. Не пересекается с их
-     контролами вплоть до 320px: занимает то, чего у плеера нет —
-     правый край выше панели. Позиции физические (right), т.к.
-     раскладка UI внутри плеера не зависит от dir страницы. */
-  body.tour-active .slate{
-    left:auto;transform:none;inset-inline-end:auto;
-    right:max(12px, env(safe-area-inset-right, 0px));
-    bottom:calc(80px + env(safe-area-inset-bottom, 0px));
-    border-radius:50%;
-  }
-  body.tour-active .slate .fact{display:none}
-  body.tour-active .slate .wa-btn{
-    padding:0;justify-content:center;border-radius:50%;
-    width:clamp(48px, 14vw, 56px);height:clamp(48px, 14vw, 56px);
-  }
-  body.tour-active .slate .wa-btn span{display:none}
-  body.tour-active .slate .wa-btn svg{width:26px;height:26px}
+.card:hover{transform:translateY(-3px);box-shadow:0 16px 44px rgba(0,0,0,.45)}
+.card:focus-visible{outline:2px solid var(--sand);outline-offset:3px}
+.card .bg{
+  position:absolute;inset:0;
+  background-size:cover;background-position:center;
+  transition:transform .4s ease;
+}
+.card:hover .bg{transform:scale(1.04)}
+.card .shade{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(19,26,34,.05) 30%,rgba(19,26,34,.88) 100%);
+}
+.card .info{
+  position:absolute;inset-inline:0;bottom:0;padding:16px 18px;
+}
+.card .title{
+  font-family:'Cormorant','Rubik',serif;font-weight:600;
+  font-size:20px;line-height:1.2;margin-bottom:6px;
+}
+.card .facts{color:var(--mist);font-size:13px;letter-spacing:.02em}
+.card .badge{
+  position:absolute;top:12px;inset-inline-start:12px;
+  font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  background:rgba(19,26,34,.75);border:1px solid var(--line);
+  padding:6px 12px;border-radius:16px;color:var(--sand);
+  backdrop-filter:blur(6px);
+}
+.empty{
+  grid-column:1/-1;text-align:center;color:var(--mist);
+  padding:48px 0;font-size:15px;
 }
 
-/* ---------- Горизонтальная ориентация: компактная шапка ---------- */
-@media (max-height:460px){
-  header{height:50px}
-  .stage{inset:50px 0 0 0}
-  .made{padding:8px 14px;font-size:11px;min-width:110px}
-  .addr .eyebrow{display:none}
-  .curtain .ring{width:64px;height:64px}
-  .curtain{gap:14px}
-  .map-card iframe{height:min(62vh,420px)}
+/* ---------- Футер ---------- */
+footer{
+  border-top:1px solid var(--line);
+  padding:26px 0 calc(26px + env(safe-area-inset-bottom));
+  text-align:center;color:var(--mist);font-size:13px;
 }
-
-/* Плашка бренда: живёт ВНУТРИ .stage (обёртки iframe) и позиционируется
-   абсолютно от её верхнего левого угла — в той же системе координат,
-   в которой плеер Matterport рисует свой логотип (верхний левый угол
-   iframe). Физический left, а не inset-inline-start: логотип Matterport
-   всегда физически слева при любом направлении текста страницы.
-   Высота шапки на позицию больше НЕ влияет — медиазапросам нечего
-   пересчитывать. .stage: position:fixed => является containing block. */
-.made{
-  position:absolute;left:0;right:auto;top:0;z-index:6;
-  display:inline-flex;align-items:center;
-  font-size:14px;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--paper);text-decoration:none;
-  background:rgba(19,26,34,.96);
-  padding:16px 30px 16px 34px;
-  /* скругление только со стороны, смотрящей в экран; угол,
-     накрывающий логотип Matterport — прямой, без щели */
-  border-radius:0 0 22px 0;
-  border:1px solid var(--line);border-top:0;border-left:0;
-  backdrop-filter:blur(10px);
-  box-shadow:0 4px 16px rgba(0,0,0,.35);
-  min-width:200px;max-width:calc(100% - 12px);justify-content:center;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.made b{color:var(--sand);font-weight:500}
-.made:hover{color:var(--paper)}
-.made:focus-visible{outline:2px solid var(--sand);outline-offset:-4px}
-
-/* ---------- Модалка с картой ---------- */
-.map-overlay{
-  position:fixed;inset:0;z-index:40;
-  background:rgba(10,14,19,.7);backdrop-filter:blur(6px);
-  display:none;align-items:center;justify-content:center;padding:18px;
-}
-.map-overlay.open{display:flex}
-.map-card{
-  width:min(720px,100%);
-  background:var(--ink);border:1px solid var(--line);border-radius:var(--radius);
-  overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.6);
-  display:flex;flex-direction:column;
-}
-.map-head{
-  display:flex;align-items:center;justify-content:space-between;
-  gap:12px;padding:14px 18px;border-bottom:1px solid var(--line);
-}
-.map-head .map-title{
-  font-family:'Cormorant','Rubik',serif;font-size:19px;font-weight:600;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.map-close{
-  background:none;border:0;color:var(--mist);cursor:pointer;
-  font-size:26px;line-height:1;padding:2px 8px;border-radius:8px;flex-shrink:0;
-}
-.map-close:hover{color:var(--paper)}
-.map-close:focus-visible{outline:2px solid var(--sand)}
-.map-card iframe{width:100%;height:min(52vh,420px);border:0;display:block;background:#e8e6e1}
-.map-foot{padding:12px 18px;display:flex;justify-content:flex-end}
-.map-open-link{
-  display:inline-flex;align-items:center;gap:8px;
-  color:var(--sand);text-decoration:none;font-size:14px;font-weight:500;
-  border:1px solid rgba(199,161,117,.45);border-radius:24px;padding:9px 18px;
-  transition:background .2s ease;
-}
-.map-open-link:hover{background:rgba(199,161,117,.12)}
-.map-open-link svg{width:15px;height:15px;fill:var(--sand)}
+footer b{color:var(--sand);font-weight:500;letter-spacing:.18em}
 
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -270,261 +153,172 @@ html[dir="rtl"] .curtain .ring svg{margin-right:4px;transform:scaleX(-1)}
 <body>
 
 <!-- ============================================================
-     КОНФИГ ОБЪЕКТА — правь этот блок (+ OG-теги в head)
+     НАСТРОЙКИ ГЛАВНОЙ: номер WhatsApp вписан ниже.
+     Список объектов живёт в tours.json рядом с этим файлом.
 ============================================================ -->
 <script>
-const TOUR = {
-  matterportId: "uJprx82uPV4",
-  address: {                                 // адрес на языках; пустые берут иврит
-    he: "רח׳ דב גרונר 6",
-    ru: "רח׳ דב גרונר 6",
-    en: "Apartment in Netanya",
-    fr: "Appartement à Netanya",
-    es: "Apartamento en Netanya",
-    ar: "شقة في نتانيا"
-  },
-  mapAddress: "רח׳ דב גרונר 6, Israel",             // адрес для Google Maps, лучше улица+город латиницей или на иврите
-  rooms: "—",
-  area:  "—",
-  floor: "—",
-  agencyName: "",
-  agencyLogo: "",
-  whatsapp: "9725XXXXXXXX",                  // только цифры, с 972
-  brandName: "BIFNIM",
-  brandUrl:  "https://bifnim.co.il",
-  defaultLang: "he"                          // язык по умолчанию
-};
+const SITE = { whatsapp: "972552481623" };
 
-/* ---------- Словарь интерфейса.
-     Порядок ключей = порядок в переключателе языков. ---------- */
-const I18N = {
-  he: {dir:"rtl", name:"עברית",
-    eyebrow:"סיור תלת־ממד", enter:"להיכנס לדירה",
-    sub:"הזיזו את האצבע ועברו בין החדרים — כאילו אתם כבר בפנים",
+/* ---------- Словарь интерфейса: he (дефолт) / en / fr ----------
+   Заголовки карточек (адрес) приходят как есть из tours.json —
+   свободный текст адреса автоматически не переводится. Переводятся
+   статичная "оболочка" страницы и словарь единиц/статусов карточек. */
+const LANG = {
+  he: { dir:"rtl", name:"עברית", flag:"🇮🇱",
+    h1:"כאילו אתם כבר בפנים",
+    sub:"סיורי תלת־ממד לעסק או לנכס שלכם.",
+    cta:"להזמנת סריקה",
+    waMsg:"שלום! אשמח לשמוע פרטים על סיור תלת־ממד לנכס",
+    toursH:"נכסים פעילים", hint:"לחצו על נכס כדי להיכנס לסיור",
+    empty:"בקרוב כאן יופיעו נכסים חדשים",
+    footer:"סיורי תלת־ממד לנדל\"ן · נתניה והסביבה",
     rooms:"חדרים", area:'מ"ר', floor:"קומה",
-    wa:"לכתוב למתווך", made:"הופק על ידי",
-    openMap:"פתיחה בגוגל מפות", close:"סגירה",
-    langSel:"בחירת שפה", slateLbl:"פרטי הנכס ויצירת קשר",
-    waMsg:"שלום! ראיתי את הסיור התלת־ממדי של הדירה ואשמח לפרטים"},
-  en: {dir:"ltr", name:"English",
-    eyebrow:"3D Walkthrough", enter:"Step inside",
-    sub:"Swipe to move between rooms — as if you were already there",
+    badges:{ "להשכרה":"להשכרה", "למכירה":"למכירה", "הושכר":"הושכר", "לדוגמה":"לדוגמה" },
+    langAria:"בחירת שפה"
+  },
+  en: { dir:"ltr", name:"English", flag:"🇬🇧",
+    h1:"As if you're already inside",
+    sub:"3D tours for your property or business.",
+    cta:"Book a scan",
+    waMsg:"Hi! I'd like details about a 3D tour for a property",
+    toursH:"Active properties", hint:"Tap a property to enter the tour",
+    empty:"New properties coming soon",
+    footer:"3D property tours · Netanya & surroundings",
     rooms:"rooms", area:"m²", floor:"floor",
-    wa:"Message the agent", made:"Tour by",
-    openMap:"Open in Google Maps", close:"Close",
-    langSel:"Language selection", slateLbl:"Property details and contact",
-    waMsg:"Hi! I saw the 3D tour of the apartment and would love more details"},
-  ru: {dir:"ltr", name:"Русский",
-    eyebrow:"3D-прогулка", enter:"Войти в квартиру",
-    sub:"Двигайтесь по комнатам пальцем — как будто вы уже внутри",
-    rooms:"комнат", area:"м²", floor:"этаж",
-    wa:"Написать маклеру", made:"Тур:",
-    openMap:"Открыть в Google Maps", close:"Закрыть",
-    langSel:"Выбор языка", slateLbl:"Данные квартиры и контакт",
-    waMsg:"Шалом! Видел(а) 3D-тур квартиры, хочу узнать подробнее"},
-  ar: {dir:"rtl", name:"العربية",
-    eyebrow:"جولة ثلاثية الأبعاد", enter:"ادخل إلى الشقة",
-    sub:"حرّك إصبعك للتنقل بين الغرف — وكأنك بالفعل في الداخل",
-    rooms:"غرف", area:"م²", floor:"طابق",
-    wa:"مراسلة الوكيل", made:"الجولة من",
-    openMap:"فتح في خرائط جوجل", close:"إغلاق",
-    langSel:"اختيار اللغة", slateLbl:"تفاصيل العقار والتواصل",
-    waMsg:"مرحباً! شاهدت الجولة ثلاثية الأبعاد للشقة وأود المزيد من التفاصيل"},
-  fr: {dir:"ltr", name:"Français",
-    eyebrow:"Visite 3D", enter:"Entrez dans l'appartement",
-    sub:"Glissez pour passer d'une pièce à l'autre — comme si vous y étiez",
+    badges:{ "להשכרה":"For Rent", "למכירה":"For Sale", "הושכר":"Rented", "לדוגמה":"Example" },
+    langAria:"Language selection"
+  },
+  fr: { dir:"ltr", name:"Français", flag:"🇫🇷",
+    h1:"Comme si vous y étiez déjà",
+    sub:"Visites 3D pour votre bien ou votre entreprise.",
+    cta:"Réserver un scan",
+    waMsg:"Bonjour ! J'aimerais des détails sur une visite 3D d'un bien",
+    toursH:"Biens actifs", hint:"Cliquez sur un bien pour visiter",
+    empty:"De nouveaux biens arrivent bientôt",
+    footer:"Visites 3D immobilières · Netanya et environs",
     rooms:"pièces", area:"m²", floor:"étage",
-    wa:"Écrire à l'agent", made:"Visite par",
-    openMap:"Ouvrir dans Google Maps", close:"Fermer",
-    langSel:"Choix de la langue", slateLbl:"Détails du bien et contact",
-    waMsg:"Bonjour ! J'ai vu la visite 3D de l'appartement, je souhaite plus de détails"},
-  es: {dir:"ltr", name:"Español",
-    eyebrow:"Recorrido 3D", enter:"Entra al apartamento",
-    sub:"Desliza para moverte entre habitaciones — como si ya estuvieras dentro",
-    rooms:"hab.", area:"m²", floor:"planta",
-    wa:"Escribir al agente", made:"Tour por",
-    openMap:"Abrir en Google Maps", close:"Cerrar",
-    langSel:"Selección de idioma", slateLbl:"Detalles del inmueble y contacto",
-    waMsg:"¡Hola! Vi el recorrido 3D del apartamento y me gustaría más información"}
+    badges:{ "להשכרה":"À louer", "למכירה":"À vendre", "הושכר":"Loué", "לדוגמה":"Exemple" },
+    langAria:"Choix de la langue"
+  }
 };
 </script>
 
-<header>
-  <div class="addr">
-    <div class="eyebrow" id="eyebrow"></div>
-    <button class="addr-btn" id="addrBtn" type="button">
-      <h1 id="addr"></h1>
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
-    </button>
-  </div>
-  <div class="head-right">
-    <div class="agency" id="agency"></div>
-    <select class="lang" id="lang" aria-label="Language"></select>
-  </div>
-</header>
+<div class="langbar" id="langbar" role="group"></div>
 
-<main class="stage">
-  <button class="curtain" id="curtain">
-    <span class="ring" aria-hidden="true">
-      <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-    </span>
-    <span class="cta-title" id="enter"></span>
-    <span class="cta-sub" id="sub"></span>
-  </button>
-  <iframe id="tour" title="3D tour"
-    allow="fullscreen; xr-spatial-tracking"
-    allowfullscreen loading="lazy"></iframe>
-  <a class="made" id="made" target="_blank" rel="noopener"></a>
+<main>
+<section class="hero">
+  <div class="wrap">
+    <div class="brand">BIFNIM</div>
+    <h1 id="h1"></h1>
+    <p id="sub"></p>
+    <a class="cta" id="cta" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.3-.7.8-.8 1-.1.2-.3.2-.6.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4 0-.5.1-.7l.5-.6c.1-.2.1-.4 0-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.9.9-1.1 2.2-.2 3.9 1 1.9 2.6 3.5 4.6 4.4 2 .9 2.7.8 3.5.7.6-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2-.1-.1-.3-.2-.7-.3z"/></svg>
+      <span id="ctaLbl"></span>
+    </a>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="tours-head">
+    <h2 id="toursH"></h2>
+    <span class="hint" id="hint"></span>
+  </div>
+  <div class="grid" id="grid">
+    <div class="empty" id="empty" hidden></div>
+  </div>
+</section>
+
 </main>
 
-<div class="slate" id="slate" role="group">
-  <div class="fact"><div class="num" id="rooms"></div><div class="lbl" id="roomsLbl"></div></div>
-  <div class="fact"><div class="num" id="area"></div><div class="lbl" id="areaLbl"></div></div>
-  <div class="fact"><div class="num" id="floor"></div><div class="lbl" id="floorLbl"></div></div>
-  <a class="wa-btn" id="wa" target="_blank" rel="noopener">
-    <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.3-.7.8-.8 1-.1.2-.3.2-.6.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4 0-.5.1-.7l.5-.6c.1-.2.1-.4 0-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.9.9-1.1 2.2-.2 3.9 1 1.9 2.6 3.5 4.6 4.4 2 .9 2.7.8 3.5.7.6-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2-.1-.1-.3-.2-.7-.3z"/></svg>
-    <span id="waLbl"></span>
-  </a>
-</div>
-
-<!-- ---------- Модалка с картой ---------- -->
-<div class="map-overlay" id="mapOverlay" role="dialog" aria-modal="true" aria-labelledby="mapTitle">
-  <div class="map-card">
-    <div class="map-head">
-      <div class="map-title" id="mapTitle"></div>
-      <button class="map-close" id="mapClose" aria-label="Close">×</button>
-    </div>
-    <iframe id="mapFrame" title="Map" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-    <div class="map-foot">
-      <a class="map-open-link" id="mapLink" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
-        <span id="mapLinkLbl"></span>
-      </a>
-    </div>
-  </div>
-</div>
+<footer>
+  <b>BIFNIM</b> · <span id="footerTxt"></span>
+</footer>
 
 <script>
-/* ---------- Язык: ВСЕГДА иврит по умолчанию.
-   Исключение — явный параметр в ссылке: bifnim.co.il/xxx?lang=ru
-   (удобно для адресных рассылок русским/французам). ---------- */
-function detectLang(){
-  const url = new URLSearchParams(location.search).get('lang');
-  if (url && I18N[url]) return url;
-  return TOUR.defaultLang;
+/* ---------- Язык: сохранённый выбор → дефолт he ---------- */
+let currentLang = (function(){
+  try { const s = localStorage.getItem('bifnim-lang'); if (s && LANG[s]) return s; } catch(e){}
+  return 'he';
+})();
+
+let toursCache = null; /* объекты запрашиваются один раз, рендер переигрывается при смене языка */
+
+function renderCards(t){
+  const grid = document.getElementById('grid');
+  grid.querySelectorAll('.card').forEach(el => el.remove());
+  const emptyEl = document.getElementById('empty');
+  emptyEl.textContent = t.empty;
+
+  if (!Array.isArray(toursCache) || toursCache.length === 0){
+    emptyEl.hidden = false;
+    return;
+  }
+  emptyEl.hidden = true;
+  for (const item of toursCache){
+    const a = document.createElement('a');
+    a.className = 'card';
+    a.href = '/' + item.slug + '/';
+    const facts = [
+      item.rooms ? item.rooms + ' ' + t.rooms : '',
+      item.area  ? item.area + ' ' + t.area   : '',
+      item.floor ? t.floor + ' ' + item.floor : ''
+    ].filter(Boolean).join(' · ');
+    const badgeTxt = item.badge ? (t.badges[item.badge] || item.badge) : '';
+    a.innerHTML =
+      '<div class="bg" style="background-image:url(\'/' + item.slug + '/cover.jpg\')"></div>' +
+      '<div class="shade"></div>' +
+      (badgeTxt ? '<div class="badge">' + badgeTxt + '</div>' : '') +
+      '<div class="info"><div class="title">' + item.title + '</div>' +
+      '<div class="facts">' + facts + '</div></div>';
+    document.getElementById('grid').appendChild(a);
+  }
 }
 
-function apply(lang){
-  const t = I18N[lang];
-  document.documentElement.lang = lang;
+function applyLang(code){
+  const t = LANG[code];
+  currentLang = code;
+  document.documentElement.lang = code;
   document.documentElement.dir = t.dir;
 
-  document.getElementById('eyebrow').textContent = t.eyebrow;
-  document.getElementById('addr').textContent   = TOUR.address[lang] || TOUR.address[TOUR.defaultLang];
-  document.getElementById('enter').textContent  = t.enter;
-  document.getElementById('sub').textContent    = t.sub;
-  document.getElementById('rooms').textContent  = TOUR.rooms;
-  document.getElementById('area').textContent   = TOUR.area;
-  document.getElementById('floor').textContent  = TOUR.floor;
-  document.getElementById('roomsLbl').textContent = t.rooms;
-  document.getElementById('areaLbl').textContent  = t.area;
-  document.getElementById('floorLbl').textContent = t.floor;
-  document.getElementById('waLbl').textContent    = t.wa;
-  document.title = t.eyebrow + " · " + (TOUR.address[lang] || TOUR.address[TOUR.defaultLang]);
+  document.getElementById('h1').textContent = t.h1;
+  document.getElementById('sub').textContent = t.sub;
+  document.getElementById('ctaLbl').textContent = t.cta;
+  document.getElementById('toursH').textContent = t.toursH;
+  document.getElementById('hint').textContent = t.hint;
+  document.getElementById('footerTxt').textContent = t.footer;
+  document.title = "BIFNIM · " + t.toursH;
 
-  document.getElementById('wa').href =
-    "https://wa.me/" + TOUR.whatsapp + "?text=" + encodeURIComponent(t.waMsg);
+  document.getElementById('cta').href =
+    "https://wa.me/" + SITE.whatsapp + "?text=" + encodeURIComponent(t.waMsg);
 
-  /* Доступные имена, следующие за языком страницы:
-     WA-ссылка на мобильном остаётся без видимого текста (иконка) —
-     aria-label даёт ей имя; заголовки iframe и группы — локализованы */
-  const adr = TOUR.address[lang] || TOUR.address[TOUR.defaultLang];
-  document.getElementById('wa').setAttribute('aria-label', t.wa);
-  document.getElementById('slate').setAttribute('aria-label', t.slateLbl);
-  document.getElementById('lang').setAttribute('aria-label', t.langSel);
-  document.getElementById('tour').title = t.eyebrow + " · " + adr;
-  document.getElementById('mapFrame').title = adr;
+  const bar = document.getElementById('langbar');
+  bar.setAttribute('aria-label', t.langAria);
+  bar.querySelectorAll('button').forEach(b =>
+    b.setAttribute('aria-pressed', String(b.dataset.code === code)));
 
-  const made = document.getElementById('made');
-  made.href = TOUR.brandUrl;
-  made.innerHTML = t.made + " <b>" + TOUR.brandName + "</b>";
-
-  /* карта: заголовок, ссылка и язык подписей Google */
-  document.getElementById('mapTitle').textContent = TOUR.address[lang] || TOUR.address[TOUR.defaultLang];
-  document.getElementById('mapLinkLbl').textContent = t.openMap;
-  document.getElementById('mapClose').setAttribute('aria-label', t.close);
-  const q = encodeURIComponent(TOUR.mapAddress);
-  document.getElementById('mapLink').href = "https://www.google.com/maps/search/?api=1&query=" + q;
-  mapSrc = "https://www.google.com/maps?q=" + q + "&hl=" + lang + "&z=16&output=embed";
-  if (overlay.classList.contains('open')) mapFrame.src = mapSrc;
+  if (toursCache) renderCards(t);
+  try { localStorage.setItem('bifnim-lang', code); } catch(e){}
 }
 
-/* ---------- Переключатель ---------- */
-const sel = document.getElementById('lang');
-for (const code of Object.keys(I18N)){
-  const o = document.createElement('option');
-  o.value = code; o.textContent = I18N[code].name;
-  sel.appendChild(o);
-}
-
-/* ---------- Модалка карты ---------- */
-const overlay  = document.getElementById('mapOverlay');
-const mapFrame = document.getElementById('mapFrame');
-let mapSrc = "";
-
-let current = detectLang();
-sel.value = current;
-apply(current);
-sel.addEventListener('change', () => { current = sel.value; apply(current); });
-
-document.getElementById('addrBtn').addEventListener('click', () => {
-  if (!mapFrame.src) mapFrame.src = mapSrc;   // карта грузится при первом открытии
-  overlay.classList.add('open');
-  document.getElementById('mapClose').focus();
-});
-function closeMap(){
-  overlay.classList.remove('open');
-  document.getElementById('addrBtn').focus();
-}
-document.getElementById('mapClose').addEventListener('click', closeMap);
-overlay.addEventListener('click', e => { if (e.target === overlay) closeMap(); });
-document.addEventListener('keydown', e => {
-  if (!overlay.classList.contains('open')) return;
-  if (e.key === 'Escape'){ closeMap(); return; }
-  /* Ловушка фокуса внутри диалога карты: Tab циклится между
-     кнопкой закрытия и ссылкой "открыть в Maps" */
-  if (e.key === 'Tab'){
-    const f = [document.getElementById('mapClose'), document.getElementById('mapLink')];
-    const i = f.indexOf(document.activeElement);
-    e.preventDefault();
-    const next = e.shiftKey ? (i <= 0 ? f.length - 1 : i - 1)
-                            : (i === -1 || i === f.length - 1 ? 0 : i + 1);
-    f[next].focus();
-  }
+/* ---------- Кнопки языков ---------- */
+const bar = document.getElementById('langbar');
+Object.keys(LANG).forEach(code => {
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.dataset.code = code;
+  b.setAttribute('aria-label', LANG[code].name);
+  b.innerHTML = '<span class="flag" aria-hidden="true">' + LANG[code].flag + '</span>' + LANG[code].name;
+  b.addEventListener('click', () => applyLang(code));
+  bar.appendChild(b);
 });
 
-/* ---------- Агентство ---------- */
-const agency = document.getElementById('agency');
-if (TOUR.agencyLogo){
-  const img = document.createElement('img');
-  img.src = TOUR.agencyLogo; img.alt = TOUR.agencyName || 'Agency';
-  agency.appendChild(img);
-}
-if (TOUR.agencyName){
-  const s = document.createElement('span');
-  s.className = 'agency-name'; s.textContent = TOUR.agencyName;
-  agency.appendChild(s);
-}
+/* ---------- Объекты — один fetch, дальше рендер по языку ---------- */
+fetch('tours.json', {cache:'no-store'})
+  .then(r => r.ok ? r.json() : [])
+  .catch(() => [])
+  .then(data => { toursCache = Array.isArray(data) ? data : []; applyLang(currentLang); });
 
-/* ---------- Тур по клику ---------- */
-const curtain = document.getElementById('curtain');
-const frame = document.getElementById('tour');
-curtain.addEventListener('click', () => {
-  frame.src = "https://my.matterport.com/show/?m=" + TOUR.matterportId + "&play=1&brand=0&title=0&qs=1";
-  curtain.classList.add('hidden');
-  document.body.classList.add('tour-active');
-  frame.focus();
-});
+applyLang(currentLang); /* немедленный первый рендер шапки, не дожидаясь fetch */
 </script>
 <script src="/a11y.js" defer></script>
 </body>
