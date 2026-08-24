@@ -1,3 +1,4 @@
+/* FILE IDENTITY: a11y.js — root-level accessibility widget script, loaded on every page via <script src="/a11y.js">. Must stay named exactly a11y.js in the repo root — pages reference this path directly. */
 /* ============================================================
    BIFNIM — панель настроек доступности (נגישות)
    Самодостаточный виджет без внешних зависимостей.
